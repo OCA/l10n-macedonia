@@ -13,7 +13,7 @@
     ],
     'external_dependencies': {
         'python': [
-            'PySimpleSOAP',
+            'pysimplesoap',
         ],
     },
     "images": [],
