@@ -1,0 +1,62 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_mk_currency_rate_update
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-08 16:17+0000\n"
+"PO-Revision-Date: 2026-11-08 16:17+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: mk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
+
+#. module: l10n_mk_currency_rate_update
+#: model:ir.module.module,shortdesc:base.module_l10n_mk_currency_rate_update
+msgid "Currency Rate Update - NBRM"
+msgstr "Ажурирање на курсеви - НБРМ"
+
+#. module: l10n_mk_currency_rate_update
+#: model:ir.model,name:l10n_mk_currency_rate_update.model_res_currency_rate_provider
+msgid "Currency Rates Provider"
+msgstr "Давател на курсеви"
+
+#. module: l10n_mk_currency_rate_update
+#: model:ir.model.fields,field_description:l10n_mk_currency_rate_update.field_res_currency_rate_provider__display_name
+msgid "Display Name"
+msgstr "Прикажано име"
+
+#. module: l10n_mk_currency_rate_update
+#: model:ir.model.fields,field_description:l10n_mk_currency_rate_update.field_res_currency_rate_provider__id
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_mk_currency_rate_update
+#: model:ir.model.fields.selection,name:l10n_mk_currency_rate_update.selection__res_currency_rate_provider__service__nbrm
+msgid "National Bank of the Republic of North Macedonia"
+msgstr "Народна банка на Република Северна Македонија"
+
+#. module: l10n_mk_currency_rate_update
+#: model:ir.model.fields,field_description:l10n_mk_currency_rate_update.field_res_currency_rate_provider__service
+msgid "Provider"
+msgstr "Давател"
+
+#. module: l10n_mk_currency_rate_update
+#. odoo-python
+#: code:addons/l10n_mk_currency_rate_update/models/res_currency_rate_provider_nbrm.py:0
+msgid ""
+"The National Bank of the Republic of North Macedonia has no rate for "
+"%(currency)s on %(date)s."
+msgstr ""
+"Народна банка на Република Северна Македонија нема курс за %(currency)s на "
+"%(date)s."
+
+#. module: l10n_mk_currency_rate_update
+#: model:ir.module.module,summary:base.module_l10n_mk_currency_rate_update
+msgid "Update exchange rates from the National Bank of North Macedonia"
+msgstr "Ажурирање на девизните курсеви од Народната банка на Северна Македонија"
