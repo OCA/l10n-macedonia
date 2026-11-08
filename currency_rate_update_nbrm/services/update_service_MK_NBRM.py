@@ -23,30 +23,63 @@
 #
 ##############################################################################
 
-from odoo.addons.currency_rate_update.services.currency_getter_interface import CurrencyGetterInterface
-
-from datetime import datetime
-from lxml import etree
-from odoo import exceptions, _
-
 import logging
+from datetime import datetime
+
 import requests
+
+from odoo import _, exceptions
+
+from odoo.addons.currency_rate_update.services.currency_getter_interface import (
+    CurrencyGetterInterface,
+)
+
 _logger = logging.getLogger(__name__)
 
 
 class MK_NBRMGetter(CurrencyGetterInterface):
     """Implementation of Currency_getter_factory interface for NBRM service"""
 
-    code = 'MK_NBRM'
-    name = 'National Bank of the Republic of Macedonia'
+    code = "MK_NBRM"
+    name = "National Bank of the Republic of Macedonia"
     supported_currency_array = [
-        "EUR", "USD", "GBP", "CHF", "SEK", "NOK", "JPY", "DKK", "CAD", "AUD",
-        "BGN", "CZK", "HUF", "PLN", "RON", "HRK", "TRY", "RUB", "BRL", "CNY",
-        "HKD", "IDR", "ILS", "INR", "KRW", "MXN", "MYR", "NZD", "PHP", "SGD",
-        "THB", "ZAR"]
+        "EUR",
+        "USD",
+        "GBP",
+        "CHF",
+        "SEK",
+        "NOK",
+        "JPY",
+        "DKK",
+        "CAD",
+        "AUD",
+        "BGN",
+        "CZK",
+        "HUF",
+        "PLN",
+        "RON",
+        "HRK",
+        "TRY",
+        "RUB",
+        "BRL",
+        "CNY",
+        "HKD",
+        "IDR",
+        "ILS",
+        "INR",
+        "KRW",
+        "MXN",
+        "MYR",
+        "NZD",
+        "PHP",
+        "SGD",
+        "THB",
+        "ZAR",
+    ]
 
-    def get_updated_currency(self, currency_array, main_currency,
-                             max_delta_days, date=False):
+    def get_updated_currency(
+        self, currency_array, main_currency, max_delta_days, date=False
+    ):
         """implementation of abstract method of Curreny_getter_interface
 
         Args:
@@ -69,53 +102,47 @@ class MK_NBRMGetter(CurrencyGetterInterface):
             currency_array.remove(main_currency)
 
         # Get currencies for current day:
-        rate_data_str = date or datetime.now().strftime('%d.%m.%Y')
+        rate_data_str = date or datetime.now().strftime("%d.%m.%Y")
 
         _logger.info("NBRM currency rate service : connecting...")
-        resp = requests.get(url.format(
-            StartDate=rate_data_str, EndDate=rate_data_str))
+        resp = requests.get(url.format(StartDate=rate_data_str, EndDate=rate_data_str))
 
         if resp.status_code != 200:
             raise exceptions.Warning(
-                _('Error occurred during getting currencies from NBRM'))
+                _("Error occurred during getting currencies from NBRM")
+            )
             _logger.info("The Service NBRM returned error: %s" % resp.text)
 
         result = resp.json()
         _logger.info("Received currency list from NBRM!")
 
         rate_date = result[0]["datum_f"]
-        rate_date_datetime = datetime.strptime(rate_date.split('T')[0],
-                                               "%Y-%m-%d")
+        rate_date_datetime = datetime.strptime(rate_date.split("T")[0], "%Y-%m-%d")
         self.check_rate_date(rate_date_datetime, max_delta_days)
 
         # we dynamically update supported currencies
-        self.supported_currency_array = [x['oznaka'] for x in result]
+        self.supported_currency_array = [x["oznaka"] for x in result]
 
-        self.supported_currency_array.append('MKD')
-        _logger.info("Supported currencies = %s" %
-                      self.supported_currency_array)
+        self.supported_currency_array.append("MKD")
+        _logger.info("Supported currencies = %s" % self.supported_currency_array)
 
         self.validate_cur(main_currency)
-        currency_data = {curr['oznaka']: curr for curr in result}
-        if main_currency != 'MKD':
+        currency_data = {curr["oznaka"]: curr for curr in result}
+        if main_currency != "MKD":
             main_curr_data = currency_data[main_currency]
 
         for curr in currency_array:
             self.validate_cur(curr)
-            if curr == 'MKD':
-                rate = 1 / main_curr_data['sreden']
+            if curr == "MKD":
+                rate = 1 / main_curr_data["sreden"]
             else:
                 curr_data = currency_data[curr]
-                if main_currency == 'MKD':
-                    rate = 1 / curr_data['sreden']
+                if main_currency == "MKD":
+                    rate = 1 / curr_data["sreden"]
                 else:
-                    rate = 1 / (
-                        curr_data['sreden'] /
-                        main_curr_data['sreden']
-                    )
+                    rate = 1 / (curr_data["sreden"] / main_curr_data["sreden"])
 
             self.updated_currency[curr] = rate
-            _logger.debug(
-                "Rate retrieved : 1 %s = %s %s" % (main_currency, rate, curr))
+            _logger.debug("Rate retrieved : 1 %s = %s %s" % (main_currency, rate, curr))
 
         return self.updated_currency, self.log_info

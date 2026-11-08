@@ -9,9 +9,8 @@
     "depends": [
         "currency_rate_update",
     ],
-    "data": [
-    ],
+    "data": [],
     "images": [],
     "demo": [],
-    'installable': True
+    "installable": True,
 }
