@@ -1,0 +1,2 @@
+- Darko Nikolovski \<<darko@versada.eu>\>
+- Kiril Vangelovski \<<kiril@lambda-is.com>\>
